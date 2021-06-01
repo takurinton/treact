@@ -6,7 +6,8 @@ build({
   entryPoints,
   outbase: './src',
   outdir: './dist',
-  platform: 'browser',
+  bundle: true,
+  platform: 'node',
   external: [], 
   watch: false
 })
