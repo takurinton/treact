@@ -1,10 +1,9 @@
-import { createVNode } from './vdomrinton/create-element';
+import { createVNode, render } from './vdomrinton/create-element';
 
 // 仮想DOMツリーの生成
-const el = createVNode('div', { id: 'app', class: 'main'},
-    createVNode('p', { id: 'name' }, 'hello world!!'),
-    createVNode('input', {
-            type: 'button',
+const vdom = createVNode('div', { id: 'app', class: 'main'},
+    createVNode('h1', { id: 'name' }, 'hello world!!'),
+    createVNode('button', {
             id: 'increment',
             onclick: () => {
                 console.log('hello world');
@@ -14,13 +13,5 @@ const el = createVNode('div', { id: 'app', class: 'main'},
     )
 );
 
-console.log(el)
-// >>> npm run start
-// {
-//     nodeName: 'div',
-//     attributes: { id: 'main' },
-//     children: [
-//       { nodeName: 'p', attributes: [Object], children: [Array] },
-//       { nodeName: 'button', attributes: [Object], children: [Array] }
-//     ]
-// }
+const app = document.getElementById('app');
+render(app, vdom);
