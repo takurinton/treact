@@ -22,6 +22,6 @@ rapida のネックな点
 
 ## フロー
 
-1. `createElement` 関数で仮想DOMを生成する
+1. `createVNode` 関数で仮想DOMを生成する
 1. それをもとにして実DOMを生成する
 1. 差分検知を行い状態管理をする

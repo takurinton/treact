@@ -15,11 +15,13 @@ export interface VNode {
 }
 
 // 仮想DOM を生成する
-// ここはシンプル、preact の h 関数や React の createElement 関数と同じ
-export function createElement(
+// ここはシンプル、preact の h 関数や React の createVNode 関数と同じ
+export function createVNode(
   nodeName: keyof ElementTagNameMap,
   attributes: Attributes,
   ...children: NodeType[]
 ): VNode {
-  return { nodeName, attributes, children };
+  const vnode = { nodeName, attributes, children };
+  // options を追加して条件分岐を行う
+  return vnode;
 }

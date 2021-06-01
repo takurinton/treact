@@ -1,10 +1,10 @@
 // src/vdomrinton/ui.ts
-function createElement(nodeName, attributes, ...children) {
+function createVNode(nodeName, attributes, ...children) {
   return { nodeName, attributes, children };
 }
 
 // src/index.ts
-var el = createElement("div", { id: "app", class: "main" }, createElement("p", { id: "name" }, "hello world!!"), createElement("input", {
+var el = createVNode("div", { id: "app", class: "main" }, createVNode("p", { id: "name" }, "hello world!!"), createVNode("input", {
   type: "button",
   id: "increment",
   onclick: () => {

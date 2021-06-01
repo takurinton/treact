@@ -1,8 +1,8 @@
-import { createElement, VNode } from '../vdomrinton/ui';
+import { createVNode, VNode } from '../vdomrinton/create-element';
 
-describe('createElement のテスト', () => {
-    test('createElement が正しい', (): void => {
-        const res: VNode = createElement('h1', { id: 'main' }, 'hello world');
+describe('createVNode のテスト', () => {
+    test('createVNode が正しい', (): void => {
+        const res: VNode = createVNode('h1', { id: 'main' }, 'hello world');
         expect(res).toEqual(
             {
                 nodeName: "h1",
@@ -11,9 +11,9 @@ describe('createElement のテスト', () => {
             }
         );
     });
-    test('createElement ネストも行けちゃう', (): void => {
-        const res: VNode = createElement('div', { id: 'main' }, 
-            createElement('h1', { id: 'name' }, 'hello world!!')
+    test('createVNode ネストも行けちゃう', (): void => {
+        const res: VNode = createVNode('div', { id: 'main' }, 
+            createVNode('h1', { id: 'name' }, 'hello world!!')
         );
         expect(res).toEqual(
             {
