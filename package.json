@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node esbuild.js"
+    "start": "npm run build && npm run go",
+    "build": "node esbuild.js",
+    "go": "node dist/index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,7 +20,9 @@
   },
   "homepage": "https://github.com/takurinton/vdomrinton#readme",
   "devDependencies": {
-    "esbuild": "^0.12.5"
+    "esbuild": "^0.12.5",
+    "esbuild-jest": "^0.5.0",
+    "jest": "^27.0.3"
   },
   "dependencies": {
     "glob": "^7.1.7"
