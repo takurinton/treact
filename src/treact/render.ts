@@ -13,5 +13,5 @@ export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLEl
   
 // hydration 
 export function hydrate(vnode: NodeType, target: HTMLElement): HTMLElement | Text {
-return render(vnode, target, hydrate);
+    return render(vnode, target, hydrate);
 }

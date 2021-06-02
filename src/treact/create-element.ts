@@ -1,4 +1,3 @@
-// 
 type NodeType = VNode | string | number;
 type Attributes = { [key: string]: string | Function };
 
@@ -68,7 +67,11 @@ function createElement(node: NodeType): HTMLElement | Text {
 
 export {
   NodeType,
-  Component, 
+  Attributes,
+  Component,
+  VNode,
+  isVNode, 
+  isEventAttr,
   createVNode,
   createElement,
 }
