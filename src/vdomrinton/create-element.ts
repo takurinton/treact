@@ -67,7 +67,18 @@ export function createElement(node: NodeType): HTMLElement | Text {
 }
 
 // render 関数
-// TODO: hydrate 関数も作る
-export function render(vnode: NodeType, target: HTMLElement): HTMLElement | Text {
+export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLElement | object): HTMLElement | Text {
+  let isHydrating = typeof replaceNode === 'function';
+
+  // ここで hydration の処理を書く
+  // createElement の中に処理を書くか、createElement をこっちに持ってきてもいいかも
+  // どちらにせよ差分検知を実装した後に考える
+  let oldVNode = isHydrating ? null : ''; 
+
   return target.appendChild(createElement(vnode));
+}
+
+// hydration 
+export function hydrate(vnode: NodeType, target: HTMLElement): HTMLElement | Text {
+  return render(vnode, target, hydrate);
 }

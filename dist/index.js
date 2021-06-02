@@ -28,7 +28,9 @@ function createElement(node) {
   node.children.forEach((child) => el.appendChild(createElement(child)));
   return el;
 }
-function render(target, vnode) {
+function render(vnode, target, replaceNode) {
+  let isHydrating = typeof replaceNode === "function";
+  let oldVNode = isHydrating ? null : "";
   return target.appendChild(createElement(vnode));
 }
 
@@ -40,4 +42,4 @@ var vdom = createVNode("div", { id: "app", class: "main" }, createVNode("h1", { 
   }
 }, "click me!!"));
 var app = document.getElementById("app");
-render(app, vdom);
+render(vdom, app);
