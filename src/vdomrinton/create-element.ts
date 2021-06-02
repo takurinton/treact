@@ -68,6 +68,6 @@ export function createElement(node: NodeType): HTMLElement | Text {
 
 // render 関数
 // TODO: hydrate 関数も作る
-export function render(target: HTMLElement, vnode: NodeType): HTMLElement | Text {
+export function render(vnode: NodeType, target: HTMLElement): HTMLElement | Text {
   return target.appendChild(createElement(vnode));
 }

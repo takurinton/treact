@@ -14,4 +14,4 @@ const vdom = createVNode('div', { id: 'app', class: 'main'},
 );
 
 const app = document.getElementById('app');
-render(app, vdom);
+render(vdom, app);
