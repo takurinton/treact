@@ -3,12 +3,12 @@ type NodeType = VNode | string | number;
 type Attributes = { [key: string]: string | Function };
 
 // 見た目
-export interface View<State, Actions> {
+interface Component<State, Actions> {
   (state: State, actions: Actions): VNode;
 }
 
 // 仮想DOM
-export interface VNode {
+interface VNode {
   nodeName: keyof ElementTagNameMap;
   attributes: Attributes;
   children: NodeType[];
@@ -39,7 +39,7 @@ function setAttributes(target: HTMLElement, attrs: Attributes): void {
 
 // 仮想DOM を生成する
 // ここはシンプル、preact の h 関数や React の createVNode 関数と同じ
-export function createVNode(
+function createVNode(
   nodeName: keyof ElementTagNameMap,
   attributes: Attributes,
   ...children: NodeType[]
@@ -50,7 +50,7 @@ export function createVNode(
 }
 
 // 仮想DOM を使用して実DOM を生成する
-export function createElement(node: NodeType): HTMLElement | Text {
+function createElement(node: NodeType): HTMLElement | Text {
   if (!isVNode(node)) {
     return document.createTextNode(node.toString());
   }
@@ -66,19 +66,9 @@ export function createElement(node: NodeType): HTMLElement | Text {
   return el;
 }
 
-// render 関数
-export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLElement | object = undefined): HTMLElement | Text {
-  let isHydrating = typeof replaceNode === 'function';
-
-  // ここで hydration の処理を書く
-  // createElement の中に処理を書くか、createElement をこっちに持ってきてもいいかも
-  // どちらにせよ差分検知を実装した後に考える
-  let oldVNode = isHydrating ? null : ''; 
-
-  return target.appendChild(createElement(vnode));
-}
-
-// hydration 
-export function hydrate(vnode: NodeType, target: HTMLElement): HTMLElement | Text {
-  return render(vnode, target, hydrate);
+export {
+  NodeType,
+  Component, 
+  createVNode,
+  createElement,
 }

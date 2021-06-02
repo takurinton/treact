@@ -28,9 +28,9 @@ function createElement(node) {
   node.children.forEach((child) => el.appendChild(createElement(child)));
   return el;
 }
+
+// src/treact/render.ts
 function render(vnode, target, replaceNode = void 0) {
-  let isHydrating = typeof replaceNode === "function";
-  let oldVNode = isHydrating ? null : "";
   return target.appendChild(createElement(vnode));
 }
 

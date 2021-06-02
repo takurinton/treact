@@ -1,4 +1,4 @@
-import { createVNode, render } from './treact/create-element';
+import { createVNode, render } from './treact';
 
 // 仮想DOMツリーの生成
 const vdom = createVNode('div', { id: 'app', class: 'main'},
