@@ -67,7 +67,7 @@ export function createElement(node: NodeType): HTMLElement | Text {
 }
 
 // render 関数
-export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLElement | object): HTMLElement | Text {
+export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLElement | object = undefined): HTMLElement | Text {
   let isHydrating = typeof replaceNode === 'function';
 
   // ここで hydration の処理を書く
