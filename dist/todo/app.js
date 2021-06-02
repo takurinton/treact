@@ -143,14 +143,70 @@ var Treact = class {
   }
 };
 
-// src/index.ts
-var state = {};
-var actions = {};
-var component = () => {
-  return createVNode("div", {}, "hello world");
+// playground/todo/app.ts
+var state = {
+  tasks: [],
+  form: {
+    title: "",
+    hasError: false
+  }
+};
+var actions = {
+  validate(state2, title) {
+    if (!title || title.length < 3 || title.length > 20) {
+      state2.form.hasError = true;
+    } else {
+      state2.form.hasError = false;
+    }
+    return !state2.form.hasError;
+  },
+  createTask(state2, title = "") {
+    state2.tasks.push(title);
+    state2.form.title = "";
+  },
+  removeTask(state2, index) {
+    state2.tasks.splice(index, 1);
+  }
+};
+var component = (state2, actions2) => {
+  return createVNode("div", {
+    style: "padding: 2rem;"
+  }, createVNode("h1", {
+    style: "margin-bottom: 2rem;"
+  }, createVNode("i", { class: "nes-icon heart is-medium" }), "treact todo app"), createVNode("form", {
+    style: "margin-bottom: 2rem;"
+  }, createVNode("div", {
+    style: "margin-bottom: 1rem;"
+  }, createVNode("label", {
+    for: "task-title"
+  }, "Title: "), createVNode("input", {
+    type: "text",
+    id: "task-title",
+    value: state2.form.title,
+    oninput: (ev) => {
+      const target = ev.target;
+      state2.form.title = target.value;
+      actions2.validate(state2, target.value);
+    }
+  })), createVNode("button", {
+    type: "button",
+    onclick: () => {
+      if (state2.form.hasError)
+        return;
+      actions2.createTask(state2, state2.form.title);
+    }
+  }, "Create")), createVNode("ul", {}, ...state2.tasks.map((task, i) => {
+    return createVNode("li", {
+      style: "margin-bottom: 1rem;"
+    }, task, createVNode("button", {
+      type: "button",
+      style: "margin-left: 1rem;",
+      onclick: () => actions2.removeTask(state2, i)
+    }, "\xD7"));
+  })));
 };
 new Treact({
-  el: document.getElementById("app"),
+  el: document.getElementById("takurinton"),
   state,
   component,
   actions
