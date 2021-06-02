@@ -1,4 +1,4 @@
-// src/vdomrinton/create-element.ts
+// src/treact/create-element.ts
 function isVNode(node) {
   return typeof node !== "string" && typeof node !== "number";
 }
@@ -28,7 +28,7 @@ function createElement(node) {
   node.children.forEach((child) => el.appendChild(createElement(child)));
   return el;
 }
-function render(vnode, target, replaceNode) {
+function render(vnode, target, replaceNode = void 0) {
   let isHydrating = typeof replaceNode === "function";
   let oldVNode = isHydrating ? null : "";
   return target.appendChild(createElement(vnode));

@@ -1,4 +1,4 @@
-import { createVNode, VNode } from '../vdomrinton/create-element';
+import { createVNode, VNode } from '../treact/create-element';
 
 describe('createVNode のテスト', () => {
     test('createVNode が正しい', (): void => {

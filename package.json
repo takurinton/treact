@@ -1,5 +1,5 @@
 {
-  "name": "vdomrinton",
+  "name": "treact",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/takurinton/vdomrinton.git"
+    "url": "git+https://github.com/takurinton/treact.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/takurinton/vdomrinton/issues"
+    "url": "https://github.com/takurinton/treact/issues"
   },
-  "homepage": "https://github.com/takurinton/vdomrinton#readme",
+  "homepage": "https://github.com/takurinton/treact#readme",
   "devDependencies": {
     "esbuild": "^0.12.5",
     "esbuild-jest": "^0.5.0",
