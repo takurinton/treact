@@ -1,17 +1,22 @@
-import { createVNode, render } from './treact';
+import { createVNode, Treact, Component, ActionTree } from './treact';
 
-// 仮想DOMツリーの生成
-const vdom = createVNode('div', { id: 'app', class: 'main'},
-    createVNode('h1', { id: 'name' }, 'hello world!!'),
-    createVNode('button', {
-            id: 'increment',
-            onclick: () => {
-                console.log('hello world');
-            }
-        },
-        'click me!!'
-    )
-);
+type State = {}
+const state: State = {}
 
-const app = document.getElementById('app');
-render(vdom, app);
+interface Actions extends ActionTree<State> {}
+const actions: Actions = {}
+
+const component: Component<State, Actions> = () => {
+  return createVNode(
+    'div',
+    {},
+    'hello world'
+  )
+}
+
+new Treact<State, Actions>({
+  el: document.getElementById('app'),
+  state,
+  component,
+  actions
+})

@@ -10,6 +10,7 @@ enum ChangedType {
 };
 
 // DOM の変更を検知する
+// hyperapp ではこれくらいシンプル、こんなんでいいのか？(https://github.com/jorgebucaran/hyperapp/blob/e64faca60944bb5098f80f0daec15bbafb78765e/index.js#L324-L326)
 // 上で指定した型について確認する、何もなければ None が返る
 function hasChanged(a: NodeType, b: NodeType): ChangedType {
     if (typeof a !== typeof b) return ChangedType.Type;
@@ -90,6 +91,8 @@ function updateElement(
       updateElement(target as HTMLElement, oldNode.children[i], newNode.children[i], i);
     }
   }
+  
+//   return parent;
 };
 
 export { hasChanged, updateElement };

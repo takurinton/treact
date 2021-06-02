@@ -1,11 +1,6 @@
 type NodeType = VNode | string | number;
 type Attributes = { [key: string]: string | Function };
 
-// 見た目
-interface Component<State, Actions> {
-  (state: State, actions: Actions): VNode;
-}
-
 // 仮想DOM
 interface VNode {
   nodeName: keyof ElementTagNameMap;
@@ -68,7 +63,6 @@ function createElement(node: NodeType): HTMLElement | Text {
 export {
   NodeType,
   Attributes,
-  Component,
   VNode,
   isVNode, 
   isEventAttr,

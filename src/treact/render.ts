@@ -1,22 +1,86 @@
-import { NodeType, createElement } from './create-element';
+import { VNode, createElement } from "./create-element";
 import { updateElement } from './diff';
 
-// render 関数
-export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLElement | object = undefined): HTMLElement | Text {
-    // ここで hydration の処理を書く
-    // createElement の中に処理を書くか、createElement をこっちに持ってきてもいいかも
-    // どちらにせよ差分検知を実装した後に考える
-    // let isHydrating = typeof replaceNode === 'function';
-    // let oldVNode = isHydrating ? null : ''; 
+// action 用
+export type ActionType<State> = (state: State, ...data: any) => void | any;
+export type ActionTree<State> = {
+  [action: string]: ActionType<State>
+};
 
-    if (false) {
-        updateElement(target, vnode, vnode);
-    } else {
-        return target.appendChild(createElement(vnode));
+// コンポーネント用
+export interface Component<State, Actions> {
+  (state: State, actions: Actions): VNode;
+};
+
+// Treact クラスの引数用
+interface TreactConstructor<State, Actions extends ActionTree<State>> {
+    el: Element | string
+    component: Component<State, Actions>
+    state: State
+    actions: Actions
+};
+  
+export class Treact<State, Actions extends ActionTree<State>> {
+  // 引数たち
+  private readonly el: Element; // 'app' 的な感じで文字列だったらgetElementByIdで持ってくる、elementだったらそのまま適用する
+  private readonly component: TreactConstructor<State, Actions>['component']; // コンポーネント(vdom)
+  private readonly state: TreactConstructor<State, Actions>['state']; // state を受け取る
+  private readonly actions: TreactConstructor<State, Actions>['actions']; // action を受け取る
+
+  private oldNode: VNode; // 古いノード、createElement に渡す際に新しいノードと比較して差分検知を行う
+  private newNode: VNode; // 新しいノード、更新後のノードが来る
+  private isSkipRender: boolean; // 飛ばすか否かの値
+
+  constructor(params: TreactConstructor<State, Actions>) {
+    this.el = typeof params.el === 'string' ? document.getElementById(params.el) : params.el;
+    this.component = params.component;
+    this.state = params.state;
+    this.actions = this.dispatch(params.actions);
+    this.rerender();
+  };
+
+  // hooks らしい何か、開発者が定義した action を使用して値を更新する
+  private dispatch(actions: Actions): Actions {
+    const dispatched: ActionTree<State> = {};
+    for (const key in actions) {
+      const action = actions[key];
+      dispatched[key] = (state: State, ...data: any): any => {
+        const ret = action(state, ...data);
+        // 再レンダリングする
+        this.rerender();
+        return ret;
+      }
     }
+    return dispatched as Actions;
+  }
+
+  // 仮想DOM を更新して再レンダリングする
+  private rerender(): void {
+    this.newNode = this.component(this.state, this.actions);
+    this.schedule();
+  }
+
+  // render を遅らせる、カッコよく言うとスケジューリング
+  private schedule(): void {
+    if (!this.isSkipRender) {
+      this.isSkipRender = true;
+      // 非同期で遅延させる
+      setTimeout(this.render.bind(this));``
+    }
+  }
+
+  // 実DOM に反映する
+  private render(): void {
+    if (this.oldNode) {
+      // 差分
+      updateElement(this.el as HTMLElement, this.oldNode, this.newNode);
+    } else {
+      this.el.appendChild(createElement(this.newNode));
+    }
+
+    // 反映後に更新する
+    this.oldNode = this.newNode;
+    this.isSkipRender = false;
+  }
 }
   
-// hydration 
-export function hydrate(vnode: NodeType, target: HTMLElement): HTMLElement | Text {
-    return render(vnode, target, hydrate);
-}

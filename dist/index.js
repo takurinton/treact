@@ -39,22 +39,119 @@ var ChangedType;
   ChangedType2[ChangedType2["Value"] = 4] = "Value";
   ChangedType2[ChangedType2["Attr"] = 5] = "Attr";
 })(ChangedType || (ChangedType = {}));
-
-// src/treact/render.ts
-function render(vnode, target, replaceNode = void 0) {
-  if (false) {
-    updateElement(target, vnode, vnode);
-  } else {
-    return target.appendChild(createElement(vnode));
+function hasChanged(a, b) {
+  if (typeof a !== typeof b)
+    return 1;
+  if (!isVNode(a) && a !== b)
+    return 2;
+  if (isVNode(a) && isVNode(b)) {
+    if (a.nodeName !== b.nodeName)
+      return 3;
+    if (a.attributes.value !== b.attributes.value)
+      return 4;
+    if (JSON.stringify(a.attributes) !== JSON.stringify(b.attributes))
+      return 5;
+  }
+  return 0;
+}
+function updateAttributes(target, oldAttrs, newAttrs) {
+  for (let attr in oldAttrs) {
+    if (!isEventAttr(attr)) {
+      target.removeAttribute(attr);
+    }
+  }
+  for (let attr in newAttrs) {
+    if (!isEventAttr(attr)) {
+      target.setAttribute(attr, newAttrs[attr]);
+    }
+  }
+}
+function updateValue(target, newValue) {
+  target.value = newValue;
+}
+function updateElement(parent, oldNode, newNode, index = 0) {
+  if (!oldNode) {
+    parent.appendChild(createElement(newNode));
+    return;
+  }
+  const target = parent.childNodes[index];
+  if (!newNode) {
+    parent.removeChild(target);
+    return;
+  }
+  const changeType = hasChanged(oldNode, newNode);
+  switch (changeType) {
+    case 1:
+    case 2:
+    case 3:
+      parent.replaceChild(createElement(newNode), target);
+      return;
+    case 4:
+      updateValue(target, newNode.attributes.value);
+      return;
+    case 5:
+      updateAttributes(target, oldNode.attributes, newNode.attributes);
+      return;
+  }
+  if (isVNode(oldNode) && isVNode(newNode)) {
+    for (let i = 0; i < newNode.children.length || i < oldNode.children.length; i++) {
+      updateElement(target, oldNode.children[i], newNode.children[i], i);
+    }
   }
 }
 
-// src/index.ts
-var vdom = createVNode("div", { id: "app", class: "main" }, createVNode("h1", { id: "name" }, "hello world!!"), createVNode("button", {
-  id: "increment",
-  onclick: () => {
-    console.log("hello world");
+// src/treact/render.ts
+var Treact = class {
+  constructor(params) {
+    this.el = typeof params.el === "string" ? document.getElementById(params.el) : params.el;
+    this.component = params.component;
+    this.state = params.state;
+    this.actions = this.dispatch(params.actions);
+    this.rerender();
   }
-}, "click me!!"));
-var app = document.getElementById("app");
-render(vdom, app);
+  dispatch(actions2) {
+    const dispatched = {};
+    for (const key in actions2) {
+      const action = actions2[key];
+      dispatched[key] = (state2, ...data) => {
+        const ret = action(state2, ...data);
+        this.rerender();
+        return ret;
+      };
+    }
+    return dispatched;
+  }
+  rerender() {
+    this.newNode = this.component(this.state, this.actions);
+    this.schedule();
+  }
+  schedule() {
+    if (!this.isSkipRender) {
+      this.isSkipRender = true;
+      setTimeout(this.render.bind(this));
+      ``;
+    }
+  }
+  render() {
+    if (this.oldNode) {
+      updateElement(this.el, this.oldNode, this.newNode);
+    } else {
+      this.el.appendChild(createElement(this.newNode));
+    }
+    this.oldNode = this.newNode;
+    this.isSkipRender = false;
+  }
+};
+
+// src/index.ts
+var state = {};
+var actions = {};
+var component = () => {
+  return createVNode("div", {}, "hello world");
+};
+new Treact({
+  el: document.getElementById("app"),
+  state,
+  component,
+  actions
+});
