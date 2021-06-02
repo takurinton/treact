@@ -29,9 +29,24 @@ function createElement(node) {
   return el;
 }
 
+// src/treact/diff.ts
+var ChangedType;
+(function(ChangedType2) {
+  ChangedType2[ChangedType2["None"] = 0] = "None";
+  ChangedType2[ChangedType2["Type"] = 1] = "Type";
+  ChangedType2[ChangedType2["Text"] = 2] = "Text";
+  ChangedType2[ChangedType2["Node"] = 3] = "Node";
+  ChangedType2[ChangedType2["Value"] = 4] = "Value";
+  ChangedType2[ChangedType2["Attr"] = 5] = "Attr";
+})(ChangedType || (ChangedType = {}));
+
 // src/treact/render.ts
 function render(vnode, target, replaceNode = void 0) {
-  return target.appendChild(createElement(vnode));
+  if (false) {
+    updateElement(target, vnode, vnode);
+  } else {
+    return target.appendChild(createElement(vnode));
+  }
 }
 
 // src/index.ts

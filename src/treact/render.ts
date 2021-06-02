@@ -1,4 +1,5 @@
 import { NodeType, createElement } from './create-element';
+import { updateElement } from './diff';
 
 // render 関数
 export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLElement | object = undefined): HTMLElement | Text {
@@ -7,8 +8,12 @@ export function render(vnode: NodeType, target: HTMLElement, replaceNode: HTMLEl
     // どちらにせよ差分検知を実装した後に考える
     // let isHydrating = typeof replaceNode === 'function';
     // let oldVNode = isHydrating ? null : ''; 
-  
-    return target.appendChild(createElement(vnode));
+
+    if (false) {
+        updateElement(target, vnode, vnode);
+    } else {
+        return target.appendChild(createElement(vnode));
+    }
 }
   
 // hydration 
