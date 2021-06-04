@@ -1,18 +1,23 @@
-import { h, Treact, Component, ActionTree } from '../../src/treact';
+import { h } from '../../src/treact';
+import { render } from '../../src/treact/_render';
 
-type State = {}
-const state: State = {}
-
-interface Actions extends ActionTree<State> {}
-const actions: Actions = {}
-
-const component: Component<State, Actions> = (state, actions) => {
-  return h('div', {}, 'hello world');
+const handleClick = () => {
+  state.members.push('takuriton');
 }
 
-new Treact<State, Actions>({
-  el: document.getElementById('takurinton'),
-  state,
-  component,
-  actions
-})
+interface State {
+  members: string[];
+};
+
+const state: State = {
+  members: ['hoge', ]
+};
+
+const vnode = h(
+  'div', {}, 
+    h('button', { onclick: handleClick }, 'button'),
+    h('ul', {}, ...state.members.map(member => h('li', {}, member)))
+);
+
+const element = document.getElementById('takurinton');
+render(vnode, element, state);

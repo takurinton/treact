@@ -45,10 +45,7 @@ const  h = (
   nodeName: VNode['nodeName'],
   props: VNode['props'],
   ...children: VNode['children']
-): VNode => {
-  let oldNode: VNode['oldNode'], newNode: VNode['newNode'];
-  return createVNode(nodeName, props, children, oldNode, newNode);
-}
+): VNode => (createVNode(nodeName, props, children, null, null))
 
 // 仮想DOM を生成する
 // ここはシンプル、preact の h 関数や React の createElement 関数と同じ
