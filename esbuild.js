@@ -1,9 +1,10 @@
 const { build } = require('esbuild');
 const glob = require('glob');
-const entryPoints = glob.sync('./playground/todo/app.ts');
+const example = glob.sync('./playground/example/app.ts');
+const todo = glob.sync('./playground/todo/app.ts');
 
 build({
-  entryPoints,
+  entryPoints: [example, todo], 
   outbase: './playground',
   outdir: './dist',
   bundle: true,
