@@ -39,6 +39,19 @@ export class Treact<State, Actions extends ActionTree<State>> {
     this.rerender();
   };
 
+  private debug() {
+    console.log('')
+    console.log('--------------- update dom ---------------')
+    console.log('')
+    console.log(`el:           ${JSON.stringify(this.el)}`);
+    console.log(`component:    ${this.component}`);
+    console.log(`state:        ${JSON.stringify(this.state)}`);
+    console.log(`actions:      ${JSON.stringify(this.actions)}`);
+    console.log(`oldNode:      ${JSON.stringify(this.oldNode)}`);
+    console.log(`newNode:      ${JSON.stringify(this.newNode)}`);
+    console.log(`isSkipRender: ${JSON.stringify(this.isSkipRender)}`);
+  }
+
   // hooks らしい何か、開発者が定義した action を使用して値を更新する
   private dispatch(actions: Actions): Actions {
     const dispatched: ActionTree<State> = {};
@@ -71,6 +84,7 @@ export class Treact<State, Actions extends ActionTree<State>> {
 
   // 実DOM に反映する
   private render(): void {
+    // this.debug();
     if (this.oldNode) {
       // 差分
       updateElement(this.el as HTMLElement, this.oldNode, this.newNode);

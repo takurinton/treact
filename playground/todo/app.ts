@@ -55,9 +55,7 @@ const component: Component<State, Actions> = (state, actions) => {
       {
         style: 'margin-bottom: 2rem;'
       },
-      h('i', { class: 'nes-icon heart is-medium' }),
-      'treact todo app'
-    ),
+      h('i', { class: 'nes-icon heart is-medium' }),'treact todo app'),
     h(
       'form',
       {

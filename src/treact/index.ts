@@ -1,6 +1,7 @@
 export {
   NodeType,
-  createVNode as h,
+  h,
+  createVNode,
   createElement,
 } from './create-element';
 export { Treact, Component, ActionTree } from './render';

@@ -1,4 +1,4 @@
-import { NodeType, Attributes, VNode, isVNode, isEventAttr, createElement } from './create-element';
+import { NodeType, Props, VNode, isVNode, isEventAttr, createElement } from './create-element';
 
 enum ChangedType {
   None, // 変更なし
@@ -17,16 +17,16 @@ function hasChanged(a: NodeType, b: NodeType): ChangedType {
     if (!isVNode(a) && a !== b) return ChangedType.Text;
     if (isVNode(a) && isVNode(b)) {
       if (a.nodeName !== b.nodeName) return ChangedType.Node;
-      if (a.attributes.value !== b.attributes.value) return ChangedType.Value;
-      if (JSON.stringify(a.attributes) !== JSON.stringify(b.attributes)) return ChangedType.Attr;
+      if (a.props.value !== b.props.value) return ChangedType.Value;
+      if (JSON.stringify(a.props) !== JSON.stringify(b.props)) return ChangedType.Attr;
     }
     return ChangedType.None;
 };
 
 function updateAttributes(
   target: HTMLElement,
-  oldAttrs: Attributes,
-  newAttrs: Attributes
+  oldAttrs: Props,
+  newAttrs: Props
 ): void {
   for (let attr in oldAttrs) {
     if (!isEventAttr(attr)) {
@@ -78,10 +78,10 @@ function updateElement(
       parent.replaceChild(createElement(newNode), target);
       return;
     case ChangedType.Value:
-      updateValue(target as HTMLInputElement, (newNode as VNode).attributes.value as string);
+      updateValue(target as HTMLInputElement, (newNode as VNode).props.value as string);
       return;
     case ChangedType.Attr:
-      updateAttributes(target as HTMLElement, (oldNode as VNode).attributes, (newNode as VNode).attributes);
+      updateAttributes(target as HTMLElement, (oldNode as VNode).props, (newNode as VNode).props);
       return;
   }
 
