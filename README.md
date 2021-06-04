@@ -59,7 +59,6 @@ new Treact<State, Actions>({
 
 ```html
 <!-- index.html -->
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,6 +81,8 @@ new Treact<State, Actions>({
 ```ts
 // main.ts
 import { h, render } from 'treact';
+
+const state = {};
 
 const vnode = h(
   'div', {}, h(
