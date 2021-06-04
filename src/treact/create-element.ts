@@ -2,7 +2,7 @@ type NodeType = VNode | string | number;
 
 type Props = { [key: string]: string | Function } | null;
 
-type keyAttribute = string | number | null;
+// type keyAttribute = string | number | null;
 
 type ElementAttachedNeedAttr = HTMLElement & {
   vdom?: NodeType;
@@ -11,30 +11,25 @@ type ElementAttachedNeedAttr = HTMLElement & {
 type TextAttachedVNode = Text & { vdom?: NodeType;};
 
 type OldNodeElement = ElementAttachedNeedAttr | TextAttachedVNode | null;
+type NewNodeElement = ElementAttachedNeedAttr | TextAttachedVNode | null;
 
 interface VNode {
   nodeName: keyof ElementTagNameMap;
   props: Props;
-  oldNode: OldNodeElement;
   children: NodeType[];
-  // nodeType: 3 | null;
-  // keyType: keyAttribute;
+  oldNode: OldNodeElement;
+  newNode: NewNodeElement;
 }
-
 
 // 引数が NodeType として適切かどうかを確かめる(VNode を確かめる)
-function isVNode(node: NodeType): node is VNode {
-  return typeof node !== "string" && typeof node !== "number";
-}
+const isVNode = (node: NodeType): node is VNode => typeof node !== "string" && typeof node !== "number";
 
 // event かどうかを確かめる
 // on がついたら event として扱う(ex. onchange, onclick など)
-function isEventAttr(attr: string): boolean {
-  return /^on/.test(attr);
-}
+const isEventAttr = (attr: string): boolean => /^on/.test(attr);
 
 // target に属性を付与する
-function setAttributes(target: HTMLElement, attrs: Attributes): void {
+const setAttributes = (target: HTMLElement, attrs: Props): void => {
   for (let attr in attrs) {
     if (isEventAttr(attr)) {
       const eventName = attr.slice(2);
@@ -45,34 +40,33 @@ function setAttributes(target: HTMLElement, attrs: Attributes): void {
   }
 }
 
-function h(
+// ユーザーが仮想DOM を生成するときに使用する関数、更新は createVNode 関数で行う
+const  h = (
   nodeName: VNode['nodeName'],
   props: VNode['props'],
   ...children: VNode['children']
-): VNode {
-  let oldNode: VNode['oldNode'];
-  return createVNode(nodeName, props, oldNode, children);
+): VNode => {
+  let oldNode: VNode['oldNode'], newNode: VNode['newNode'];
+  return createVNode(nodeName, props, children, oldNode, newNode);
 }
 
 // 仮想DOM を生成する
 // ここはシンプル、preact の h 関数や React の createElement 関数と同じ
-function createVNode(
+const createVNode = (
   nodeName: VNode['nodeName'],
   props: VNode['props'],
-  oldNode : VNode['oldNode'] = null,
-  children: VNode['children']
-): VNode {
-  return { nodeName, props, oldNode, children };
-}
+  children: VNode['children'],
+  oldNode : VNode['oldNode'],
+  newNode: VNode['newNode']
+): VNode => ({ nodeName, props, children, oldNode, newNode });
 
 
 // 仮想DOM を使用して実DOM を生成する
-function createElement(node: NodeType): HTMLElement | Text {
+const createElement = (node: NodeType): HTMLElement | Text => {
   if (!isVNode(node)) {
     return document.createTextNode(node.toString());
   }
 
-  console.log(node)
   const el = document.createElement(node.nodeName);
   setAttributes(el, node.props);
 

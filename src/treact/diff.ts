@@ -12,7 +12,7 @@ enum ChangedType {
 // DOM の変更を検知する
 // hyperapp ではこれくらいシンプル、こんなんでいいのか？(https://github.com/jorgebucaran/hyperapp/blob/e64faca60944bb5098f80f0daec15bbafb78765e/index.js#L324-L326)
 // 上で指定した型について確認する、何もなければ None が返る
-function hasChanged(a: NodeType, b: NodeType): ChangedType {
+const hasChanged = (a: NodeType, b: NodeType): ChangedType => {
     if (typeof a !== typeof b) return ChangedType.Type;
     if (!isVNode(a) && a !== b) return ChangedType.Text;
     if (isVNode(a) && isVNode(b)) {
@@ -23,11 +23,11 @@ function hasChanged(a: NodeType, b: NodeType): ChangedType {
     return ChangedType.None;
 };
 
-function updateAttributes(
+const updateAttributes = (
   target: HTMLElement,
   oldAttrs: Props,
   newAttrs: Props
-): void {
+): void => {
   for (let attr in oldAttrs) {
     if (!isEventAttr(attr)) {
       target.removeAttribute(attr);
@@ -41,19 +41,19 @@ function updateAttributes(
 }
 
 // updateAttributesでやりたかったけど、value属性としては動かないので別途作成
-function updateValue(target: HTMLInputElement, newValue: string) {
+const updateValue = (target: HTMLInputElement, newValue: string) => {
   target.value = newValue;
 }
 
 // 検知した変更を実行する
 // oldNode と newNode の比較を行うことで変更部分だけを更新する
 // render 関数とも絡めて実装したいここらへん
-function updateElement(
+const updateElement = (
   parent: HTMLElement,
   oldNode: NodeType,
   newNode: NodeType,
   index = 0
-): void {
+): void => {
   // oldNode がない場合は新しい Node を作成する
   if (!oldNode) {
     parent.appendChild(createElement(newNode));
