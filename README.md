@@ -6,19 +6,16 @@ vdom を実装した。　
 
 ## とりあえず動かしたい人
 
-VSCode の Go Live プラグインを使用すると便利です。  
+VSCode の Go Live プラグインを使用すると便利ですが、普通に html を開くだけでも動きます。  
+以下は TODO App の例です。  
 
 ```bash
 git clone https://github.com/takurinton/treact
-cd treact
-npm i 
+cd treact/playground/todo
+npm i
 npm run build
+open index.html
 ```
-
-Go Live でライブサーバを起動する  
-  
-- [example](http://localhost:5500/playground/example)
-- [todo app](http://localhost:5500/playground/todo)  
 
 
 ## 使い方 
