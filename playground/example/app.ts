@@ -1,5 +1,4 @@
-import { h } from '../../src/treact';
-import { render } from '../../src/treact/_render';
+import { h, render } from 'treact';
 
 const handleClick = () => {
   state.members.push('takuriton');

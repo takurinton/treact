@@ -1,0 +1,22 @@
+{
+  "name": "treact",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node esbuild.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takurinton/treact.git"
+  },
+  "author": "takurinton",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.12.5",
+    "treact": "../.."
+  },
+  "dependencies": {
+    "glob": "^7.1.7"
+  }
+}
