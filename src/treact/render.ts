@@ -78,13 +78,12 @@ export class Treact<State, Actions extends ActionTree<State>> {
     if (!this.isSkipRender) {
       this.isSkipRender = true;
       // 非同期で遅延させる
-      setTimeout(this.render.bind(this));``
+      setTimeout(this.render.bind(this));
     }
   }
 
   // 実DOM に反映する
   private render(): void {
-    // this.debug();
     if (this.oldNode) {
       // 差分
       updateElement(this.el as HTMLElement, this.oldNode, this.newNode);
