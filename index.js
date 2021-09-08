@@ -162,6 +162,7 @@ var Treact = class {
     }
     this.oldNode = this.newNode;
     this.isSkipRender = false;
+    console.log(this.oldNode);
   }
 };
 
