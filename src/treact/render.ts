@@ -94,6 +94,7 @@ export class Treact<State, Actions extends ActionTree<State>> {
     // 反映後に更新する
     this.oldNode = this.newNode;
     this.isSkipRender = false;
+    console.log(this.oldNode)
   }
 }
   
